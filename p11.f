@@ -1,36 +1,36 @@
 C-----------------------------------------------------------------------        
-C       PRIME FACTOR FFT ROUTINE BASED ON TEMPERTON.                 
-C       J. COMPUT. PHYS. VOL 58, 1985 PAGE 283.                                             
+C       PRIME FACTOR FFT ROUTINE BASED ON TEMPERTON ALGORITHM                
+C       J. COMPUT. PHYS. VOL 58, 1985, PAGE 283.                                             
 C                                                                               
 C       VARIABLES:                                                              
-C                 N -       TRANSFORM LENGHT                                    
-C                 A -       COMPLEX INPUT ARRAY OF LENGHT N                     
-C                 IFAX -    INTEGER ARRAY CONTAINING FACTORIZATIONS OF N        
+C                 N -       TRANSFORM LENGTH                                    
+C                 A -       REAL PART                    
+C                 B -       IMAGINARY PART                    
+C                 IFAX -    ARRAY CONTAINING FACTORIZATIONS OF N        
 C                           ACCORDING TO N=n1*n2*....*nk                        
-C                 NFAC -    NUMBER OF FACTORS IN N (BOTH NFAC AND IFAX          
-C                           PREVIOUSLY CALCULATED IN FACTOR)                    
+C                 NFAC -    NUMBER OF FACTORS IN N          
 C                 ISKIP -   STRIDE OF FFT (e.g IF=2 SKIP EVERY SECOND           
 C                           SAMPLE)                                             
 C                 ISIGN -   FFT SIGN                                            
 C-----------------------------------------------------------------------        
+C      File: p11.f                                                            
+C      Date: Nov 1985                                                        
+C      Written by Jose' M. Carcione.                                               
        subroutine pfft(a,b,n,ifax,nfac,iskip,isign)                             
        integer ifax(1)                                                          
        dimension a(1),b(1),c(20),d(20),e(20),f(20)                              
-C       File : p11.f                                                            
-C       Date : Nov. 1985                                                        
-C       Written by Jose' M. Carcione.                                               
        if(n.eq.1) return                                                        
        data sin60/0.8660254038/,sin72/0.9510565163/,sin36/0.5877852523/         
        data sq54/0.5590169944/                                                  
        data c71/0.6234898018/,c72/-0.2225209342/,c73/-0.9009688680/             
-        data s71/0.7818314825/,s72/0.9749279121/,s73/0.4338837388/              
+       data s71/0.7818314825/,s72/0.9749279121/,s73/0.4338837388/              
        data c91/0.7660444431/,c92/0.1736481775/,c94/-0.939692621/               
        data s91/0.6427876097/,s92/0.9848077530/,s94/0.3420201430/               
        data c111/0.8412535328/,c112/0.4154150129/,c113/-0.1423148385/           
        data c114/-0.6548607342/,c115/-0.9594929737/                             
        data s111/0.5406408175/,s112/0.9096319954/,s113/0.9898214418/            
        data s114/0.7557495742/,s115/0.2817325565/                               
-        sr2=1./sqrt(2.)                                                         
+       sr2=1./sqrt(2.)                                                         
 C                                                                               
        ns=n*iskip                                                               
         do 1000 k=1,nfac                                                        
@@ -48,7 +48,6 @@ C       PERFORM THE INVERSE TRANSFORM
         if(isign.eq.-1) mu=ifac-mu                                              
 C       -----------------------------                                           
 C       MU IS THE REQUIRED ROTATION FOR THE DFT MODULE OF ORDER IFAC            
-C                                                                               
 C       NOW COMPUTE THE ADDRESSES IA,IB ETC. AND SELECT THE CODING              
 C       FOR THE CURRENT FACTOR                                                  
 C                                                                               
@@ -596,7 +595,7 @@ C       --------------------
         d(15)=d6*x3r+d5*x3i                                                     
        i=1                                                                      
        j=1                                                                      
-       do 820 t=1,4                                                             
+       do 820 jt=1,4                                                             
        aa=c(i)                                                                  
        ba=d(i)                                                                  
         ikb=i+8                                                                 
@@ -734,7 +733,7 @@ C       --------------------
        d(5)=t2i-t3r                                                             
        i=3                                                                      
        j=7                                                                      
-       do 912 t=1,2                                                             
+       do 912 jt=1,2                                                             
        aa=e(i)                                                                  
        ba=f(i)                                                                  
        ikb=i+6                                                                  
@@ -756,7 +755,7 @@ C       --------------------
        x2r=t2r+t3i                                                              
        x2i=t2i-t3r                                                              
        jjb=j+2                                                                  
-       if(t.eq.2) go to 913                                                     
+       if(jt.eq.2) go to 913                                                     
        c(jjb)=d1*x1r-d2*x1i                                                     
        d(jjb)=d2*x1r+d1*x1i                                                     
        jjc=j+4                                                                  
@@ -773,7 +772,7 @@ C       --------------------
 912     continue                                                                
        i=1                                                                      
        j=1                                                                      
-       do 915 t=1,3                                                             
+       do 915 jt=1,3                                                             
        aa=c(i)                                                                  
        ba=d(i)                                                                  
        ikb=i+6                                                                  
@@ -1246,6 +1245,4 @@ C
        return                                                                   
        end                                                                      
 C                                                                               
-
-
 :
